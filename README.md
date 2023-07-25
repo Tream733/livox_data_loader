@@ -7,3 +7,4 @@ load livox dataset and publish by sensor msg on ros2
   将大疆数据集中的点云文件PCD和图像文件JPG对齐，并回放到ros2中；
   图像数据：6路摄像头，数据类型为：sensor_msgs::msg::Image；
   激光数据：6路激光雷达，数据类型为：sensor_msgs::msg::PointCloud2；
+回放频率：10HZ。
