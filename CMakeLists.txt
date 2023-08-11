@@ -26,6 +26,7 @@ find_package(PCL REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system)
 find_package(yaml-cpp REQUIRED)
+find_package(ws_msgs REQUIRED)
 
 add_library(data_loader SHARED
 src/data_loader.cpp)
@@ -38,6 +39,7 @@ ament_target_dependencies(data_loader
   tf2_ros
   OpenCV
   yaml-cpp
+  ws_msgs
 )
 
 include_directories(
@@ -47,7 +49,8 @@ include_directories(
   ${rclcpp_lifecycle_INCLUDE_DIRS}
   ${rclcpp_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
-  ${YAML_CPP_INCLUDE_DIR})
+  ${YAML_CPP_INCLUDE_DIR}
+  ${ws_msgs_INCLUDE_DIRS})
 
   add_executable(data_loader_node src/main.cpp)
   target_link_libraries(data_loader_node

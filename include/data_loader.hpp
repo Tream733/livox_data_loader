@@ -9,6 +9,7 @@
 #include <visualization_msgs/msg/marker_array.hpp>
 #include <visualization_msgs/msg/marker.hpp>
 #include <pcl_conversions/pcl_conversions.h>
+#include "ws_msgs/msg/bbox_array.hpp"
 #include <chrono>
 #include <filesystem>
 #include <fstream>
@@ -16,6 +17,9 @@
 #include <string>
 #include <cstdlib>
 #include "yaml-cpp/yaml.h"
+#include <iostream>
+#include <fstream>
+#include <chrono>
 
 
 typedef pcl::PointXYZ Point;
@@ -40,7 +44,8 @@ public:
       IMAGE_LEFT_REAR = 8,
       IMAGE_RIGHT_REAR = 9, 
       IMAGE_RIGHT_FRONT = 10,  
-      IMAGE_TELE = 11
+      IMAGE_TELE = 11,
+      LABEL = 12
   };
 
 public:
@@ -60,7 +65,7 @@ private:
   std::string matType2encoding(int mat_type);
   void convertImageToMsg(sensor_msgs::msg::Image & msg, const std::string path );
   void convertPclToPointcloud2(sensor_msgs::msg::PointCloud2 & msg,const std::string path);
-  
+  void convertLabelToMsg(ws_msgs::msg::BboxArray& boxs, const std::string path);
   size_t file_index_;
 
   rclcpp::TimerBase::SharedPtr timer_;
@@ -79,8 +84,10 @@ private:
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_image_right_rear_;     // 
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_image_right_front_;     // 
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr publisher_image_tele_;     // 
+  rclcpp::Publisher<ws_msgs::msg::BboxArray>::SharedPtr publisher_gt_;
   std::string data_path_;
-  std::string yaml_path_;
+  std::string label_path_;
+  std::string yaml_path_ ="/home/txy/wspace/param/config.yaml";
 
   std::vector<std::string> file_names_point_cloud_front_;
   std::vector<std::string> file_names_point_cloud_left_front_;
@@ -96,6 +103,8 @@ private:
   std::vector<std::string> file_names_image_right_front_;
   std::vector<std::string> file_names_image_tele_;
 
+  std::vector<std::string> file_names_gt_label_;
+
   std::string path_point_cloud_front_;
   std::string path_point_cloud_left_front_;
   std::string path_point_point_cloud_left_rear_;
@@ -109,6 +118,10 @@ private:
   std::string path_image_right_rear_;
   std::string path_image_right_front_;
   std::string path_image_tele_;
+
+  std::vector<std::string> class_names_ = {};
+
+  std::string path_gt_label_;
   sensor_msgs::msg::CompressedImage::SharedPtr cp_msg_;
 };
 
